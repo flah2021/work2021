@@ -7,54 +7,42 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.tabs.TabLayout
+import kotlin.random.Random
 
 
 const val TAG = "MainActivity"
+const val KEY = "RandomText"
+
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var randomTextView: TextView
+    lateinit var randomButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        /* val helloTextView: TextView = findViewById(R.id.hello_world_text_view)
-         //helloTextView.text = "Привет, Мир!!!"
-         val newTextButton: Button = findViewById(R.id.new_text_button)
 
-         newTextButton.setOnClickListener {
-             helloTextView.text = "Привет. Ты воспользовался новой кнопкой"
-          */
+        randomTextView = findViewById(R.id.random_world_text_view)
+        randomButton = findViewById(R.id.random_text_button)
 
-        Log.d(TAG,"onCreate")
+        if(savedInstanceState != null){
+            randomTextView.text = savedInstanceState.getString(KEY)
+        }
+
+        randomButton.setOnClickListener {
+            randomize()
+        }
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG,"onStart")
+    fun randomize (){
+        randomTextView.text = Random.nextInt(100).toString()
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG,"onResume")
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY, randomTextView.text.toString())
+        Log.d(TAG, "Сохнанение")
     }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG,"onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG,"onStop")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(TAG,"onRestart")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG,"onDestroy")
-    }
-
 }
